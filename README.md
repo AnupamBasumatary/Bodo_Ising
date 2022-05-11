@@ -1,2 +1,3 @@
 # DESCRIPTION
-mdoel MERN app for a Restaurant
+
+model MERN app for a Restaurant...
