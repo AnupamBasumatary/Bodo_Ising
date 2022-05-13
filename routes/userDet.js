@@ -4,20 +4,9 @@ const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../models/Users');
-const UserDet = require('../models/UserDet');
-
-//Get User Details-- GET(/api/userdet) -- private
-router.get('/', auth, async (req, res) => {
-  try {
-    const details = await UserDet.find({ user: req.user.id });
-    res.json(details);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
 
 //Add User Details -- POST(/api/userdet) -- private
+
 router.post(
   '/',
   [
@@ -44,20 +33,28 @@ router.post(
       package,
     } = req.body;
 
-    try {
-      const newUserDet = new UserDet({
-        firstName,
-        lastName,
-        address1,
-        address2,
-        address3,
-        phone,
-        package,
-        user: req.user.id,
-      });
+    const UserFields = {};
+    if (firstName) UserFields.firstName = firstName;
+    if (lastName) UserFields.lastName = lastName;
+    if (address1) UserFields.address1 = address1;
+    if (address2) UserFields.address2 = address2;
+    if (address3) UserFields.address3 = address3;
+    if (phone) UserFields.phone = phone;
+    if (package) UserFields.package = package;
 
-      const userDetails = await newUserDet.save();
-      res.json(userDetails);
+    try {
+      let userDet = await User.findById(req.user.id).select('-password');
+      if (!userDet) {
+        return res.status(404).json({ msg: 'User Details Not Found, Error!' });
+      }
+
+      userDet = await User.findByIdAndUpdate(
+        req.user.id,
+        { $set: UserFields },
+        { new: true }
+      );
+
+      res.json(userDet);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -66,13 +63,36 @@ router.post(
 );
 
 //Update User Details -- PUT(/api/userdet) --private
-router.put('/:id', (req, res) => {
-  res.send('update user details');
-});
+router.put('/', auth, async (req, res) => {
+  const { firstName, lastName, address1, address2, address3, phone, package } =
+    req.body;
 
-//Delete User -- DELETE(/api/userdet) --private
-router.delete('/:id', (req, res) => {
-  res.send('Delete user');
+  const UserFields = {};
+  if (firstName) UserFields.firstName = firstName;
+  if (lastName) UserFields.lastName = lastName;
+  if (address1) UserFields.address1 = address1;
+  if (address2) UserFields.address2 = address2;
+  if (address3) UserFields.address3 = address3;
+  if (phone) UserFields.phone = phone;
+  if (package) UserFields.package = package;
+
+  try {
+    let userDet = await User.findById(req.user.id).select('-password');
+    if (!userDet) {
+      return res.status(404).json({ msg: 'User Details Not Found, Error!' });
+    }
+
+    userDet = await User.findByIdAndUpdate(
+      req.user.id,
+      { $set: UserFields },
+      { new: true }
+    );
+
+    res.json(userDet);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 module.exports = router;
