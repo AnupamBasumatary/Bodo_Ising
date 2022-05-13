@@ -14,5 +14,6 @@ app.use(express.json({ extended: false }));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/userdet', require('./routes/userDet'));
+app.use('/api/savefood', require('./routes/selectFood'));
 
 app.listen(PORT, console.log(`server started on port : ${PORT}`));
