@@ -5,16 +5,26 @@ const { check, validationResult } = require('express-validator');
 
 const PreFoodSchema = require('../models/PreFood');
 
-//Get Today's Food --GET(/api/savefood/today) --private
-router.get('/today', auth, async (req, res) => {
+//Get Food --GET(/api/savefood/:day) --private
+const getFood = async (req, res) => {
+  const day = req.params.day;
+  console.log(day);
+  console.log(req.user);
   try {
-    const food = await PreFoodSchema.find({ user: req.user.id }).sort({
+    const user = await PreFoodSchema.find({ user: req.user.id }).sort({
       date: -1,
     });
+    const food = user.day;
+
     res.json(food);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
-});
+};
+
+router.get('/:day', auth, getFood);
+
+//Save User Food --GET(/api/savefood/:day) --private
+
 module.exports = router;

@@ -5,31 +5,7 @@ const PreFoodSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'users',
   },
-  today: {
-    lunch: {
-      addon: { type: String },
-      thali: { type: String },
-      drinks: { type: String },
-    },
-    dinner: {
-      addon: { type: String },
-      thali: { type: String },
-      drinks: { type: String },
-    },
-  },
-  tomorrow: {
-    lunch: {
-      addon: { type: String },
-      thali: { type: String },
-      drinks: { type: String },
-    },
-    dinner: {
-      addon: { type: String },
-      thali: { type: String },
-      drinks: { type: String },
-    },
-  },
-  overmorrow: {
+  day: {
     lunch: {
       addon: { type: String },
       thali: { type: String },
