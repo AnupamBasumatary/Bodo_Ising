@@ -1,30 +1,44 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
-const { check, validationResult } = require('express-validator');
 
-const PreFoodSchema = require('../models/PreFood');
+const PreFood = require('../models/PreFood');
 
 //Get Food --GET(/api/savefood/:day) --private
-const getFood = async (req, res) => {
+
+router.get('/:day', auth, async (req, res) => {
   const day = req.params.day;
-  console.log(day);
-  console.log(req.user);
   try {
-    const user = await PreFoodSchema.find({ user: req.user.id }).sort({
+    const food = await PreFood.find({ user: req.user.id }).sort({
       date: -1,
     });
-    const food = user.day;
-
     res.json(food);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
-};
+});
 
-router.get('/:day', auth, getFood);
+//Save User Food --POST(/api/savefood/:day) --private
 
-//Save User Food --GET(/api/savefood/:day) --private
+router.post('/:day', auth, async (req, res) => {
+  const { lunch, dinner } = req.body;
+  const day = req.params.day.toString();
+
+  try {
+    const newPreFood = new PreFood({
+      day,
+      lunch,
+      dinner,
+      user: req.user.id,
+    });
+
+    const preFood = await newPreFood.save();
+    res.json(preFood);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;
