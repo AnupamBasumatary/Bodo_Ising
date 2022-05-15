@@ -9,7 +9,7 @@ const PreFood = require('../models/PreFood');
 router.get('/:day', auth, async (req, res) => {
   const day = req.params.day;
   try {
-    const food = await PreFood.find({ user: req.user.id }).sort({
+    const food = await PreFood.find({ user: req.user.id, day }).sort({
       date: -1,
     });
     res.json(food);

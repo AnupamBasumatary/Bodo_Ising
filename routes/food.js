@@ -4,8 +4,15 @@ const router = express.Router();
 const Food = require('../models/Food');
 
 //Get Food Details--GET(/api/food) --public
-router.get('/', (req, res) => {
-  res.json({ msg: 'Hi' });
+router.get('/', async (req, res) => {
+  const code = req.body;
+  try {
+    const food = await Food.find({ code });
+    res.json(food);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 //Add Food Details --POST(/api/food) --public
