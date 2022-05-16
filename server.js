@@ -16,5 +16,6 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/userdet', require('./routes/userDet'));
 app.use('/api/savefood', require('./routes/selectFood'));
 app.use('/api/food', require('./routes/food'));
+app.use('/api/orders', require('./routes/orders'));
 
 app.listen(PORT, console.log(`server started on port : ${PORT}`));
