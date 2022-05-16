@@ -44,7 +44,7 @@ router.post('/:day', auth, async (req, res) => {
 //Update Food for each day --PUT(/api/savefood/:day) --private
 router.put('/:day', auth, async (req, res) => {
   const { lunch, dinner } = req.body;
-  const day = req.params.day.toString();
+  const day = req.params.day;
 
   const UpdateDayFoodFields = {};
   if (lunch) UpdateDayFoodFields.lunch = lunch;

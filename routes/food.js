@@ -43,7 +43,38 @@ router.post(
     }
   }
 );
+
 //Update Food Details --PUT(/api/food) --public
+router.put('/:code', async (req, res) => {
+  const code = req.params.code;
+  const { name, description, price, category } = req.body;
+
+  const foodFields = {};
+  if (name) foodFields.name = name;
+  if (description) foodFields.description = description;
+  if (price) foodFields.price = price;
+  if (category) foodFields.code = category;
+
+  try {
+    const savedFood = await Food.find({ code });
+    if (!savedFood) {
+      return res
+        .status(404)
+        .json({ msg: `Food not available with code ${code}` });
+    }
+
+    const updatedFood = await Food.findOneAndUpdate(
+      { code },
+      { $set: foodFields },
+      { new: true }
+    );
+
+    res.json({ updatedFood });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 //Delete Food Details--DELETE(/api/food) --public
 
 module.exports = router;
