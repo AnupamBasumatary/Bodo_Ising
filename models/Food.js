@@ -21,6 +21,10 @@ const FoodSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  diet: {
+    type: String,
+    default: 'veg',
+  },
   date: {
     type: String,
     default: Date.now,
