@@ -75,6 +75,16 @@ router.put('/:code', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
 //Delete Food Details--DELETE(/api/food) --public
+router.delete('/:code', async (req, res) => {
+  try {
+    await Food.findOneAndDelete({ code: req.params.code });
+    res.json({ msg: 'Food Removed' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;
