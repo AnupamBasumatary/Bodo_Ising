@@ -111,6 +111,7 @@
   border-radius: 50%;
   -webkit-box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.4);
           box-shadow: 0 1.5rem 2rem rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 }
 
 .bottom-text {
@@ -120,7 +121,7 @@
   position: relative;
   display: block;
   text-align: center;
-  color: #226806;
+  color: rgba(9, 94, 15, 0.94);
 }
 
 .group-2 {

@@ -4,6 +4,7 @@ import Carousel from './components/layout/carousel/Carousel';
 import { CarouselData } from './components/layout/carousel/CarouselData';
 import Home from './components/Pages/home/Home';
 import './sass/main.css';
+import Footer from './components/layout/footer/Footer';
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
       <Navbar />
       <Carousel slides={CarouselData} />
       <Home />
+      <Footer />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 $color-primary: #008f29;
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif&display=swap');
 
 .navbar {
     max-width: 1200rem;
@@ -20,8 +21,9 @@ $color-primary: #008f29;
         
         &--item {
             margin-right: 5rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
             font-size: 1rem;
+            font-family: 'PT Serif', serif;
 
             &:link,
             &:visited {

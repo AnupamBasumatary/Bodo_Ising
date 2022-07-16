@@ -22,6 +22,7 @@
   -webkit-box-shadow: 0 0 3rem 2px rgba(4, 129, 21, 0.8);
           box-shadow: 0 0 3rem 2px rgba(4, 129, 21, 0.8);
   overflow: hidden;
+  cursor: pointer;
 }
 
 .slide {
