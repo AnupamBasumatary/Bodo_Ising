@@ -1,7 +1,7 @@
 import React from 'react';
-import './home.css';
+import './main.css';
 
-const Home = () => {
+const Main = () => {
   return (
     <div>
       <main className='main'>
@@ -69,4 +69,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Main;
