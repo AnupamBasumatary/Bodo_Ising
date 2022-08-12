@@ -1,15 +1,18 @@
 import React from 'react';
 import './style/navbar-style.css';
 import mainLogo from './style/Logo-1.jpg';
-import { Link } from 'react-router-dom';
+import { useAuth } from '../../../context/auth/AuthState';
 
 const Navbar = () => {
+  const [authState, authDispatch] = useAuth();
+  const { user } = authState;
+
   return (
     <div className='navbar'>
       <img src={mainLogo} className='navbar__logo' alt='Logo'></img>
       <ul className='navbar__link'>
         <li className='navbar--item'>
-          <a href='/Home' className='navbar__link--item'>
+          <a href='/' className='navbar__link--item'>
             Home
           </a>
         </li>
@@ -24,13 +27,18 @@ const Navbar = () => {
           </a>
         </li>
         <li className='navbar--item'>
-          <a href='/About-Us' className='navbar__link--item'>
+          <a href='/About' className='navbar__link--item'>
             About Us
           </a>
         </li>
         <li className='navbar--item'>
-          <a href='/Log-in' className='navbar__link--item'>
+          <a href='/Login' className='navbar__link--item'>
             Log In
+          </a>
+        </li>
+        <li className='navbar--item'>
+          <a href='/UserLogin' className='navbar__link--item'>
+            {user ? 'Hello ' + user.name : 'Logout'}
           </a>
         </li>
       </ul>

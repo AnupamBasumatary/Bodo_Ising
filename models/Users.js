@@ -32,7 +32,7 @@ const UserSchema = mongoose.Schema({
   phone: {
     type: String,
   },
-  package: {
+  packageType: {
     type: String,
     default: 'standard',
   },

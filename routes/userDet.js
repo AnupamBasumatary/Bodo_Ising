@@ -6,7 +6,6 @@ const { check, validationResult } = require('express-validator');
 const User = require('../models/Users');
 
 //Add User Details -- POST(/api/userdet) -- private
-
 router.post(
   '/',
   [
@@ -30,7 +29,7 @@ router.post(
       address2,
       address3,
       phone,
-      package,
+      packageType,
     } = req.body;
 
     const UserFields = {};
@@ -40,7 +39,7 @@ router.post(
     if (address2) UserFields.address2 = address2;
     if (address3) UserFields.address3 = address3;
     if (phone) UserFields.phone = phone;
-    if (package) UserFields.package = package;
+    if (packageType) UserFields.packageType = packageType;
 
     try {
       let userDet = await User.findById(req.user.id).select('-password');
@@ -64,8 +63,15 @@ router.post(
 
 //Update User Details -- PUT(/api/userdet) --private
 router.put('/', auth, async (req, res) => {
-  const { firstName, lastName, address1, address2, address3, phone, package } =
-    req.body;
+  const {
+    firstName,
+    lastName,
+    address1,
+    address2,
+    address3,
+    phone,
+    packageType,
+  } = req.body;
 
   const UserFields = {};
   if (firstName) UserFields.firstName = firstName;
@@ -74,7 +80,7 @@ router.put('/', auth, async (req, res) => {
   if (address2) UserFields.address2 = address2;
   if (address3) UserFields.address3 = address3;
   if (phone) UserFields.phone = phone;
-  if (package) UserFields.package = package;
+  if (packageType) UserFields.packageType = packageType;
 
   try {
     let userDet = await User.findById(req.user.id).select('-password');

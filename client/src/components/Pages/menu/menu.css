@@ -1,0 +1,17 @@
+.menu {
+    display: flex;
+}
+
+.card {
+    background-color: white;
+    width: 800rem;
+}
+
+.side {
+    background-color: #d8d8d8;
+    /* background: linear-gradient(to bottom, #234927, #cccccc); */
+    height: 100vh;
+    flex-grow: 1;
+}
+
+/* #ccffaa */
