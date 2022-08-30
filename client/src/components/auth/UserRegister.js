@@ -45,7 +45,6 @@ const UserRegister = (props) => {
     }
   };
 
-  // if (isAuthenticated) return <Navigate to='/Login' />;
   if (isAuthenticated) return <LoadUser />;
 
   return (

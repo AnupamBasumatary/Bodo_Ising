@@ -1,11 +1,17 @@
 import React from 'react';
 import './style/navbar-style.css';
 import mainLogo from './style/Logo-1.jpg';
-import { useAuth } from '../../../context/auth/AuthState';
+import { useAuth, logout } from '../../../context/auth/AuthState';
+import { Navigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [authState, authDispatch] = useAuth();
   const { user } = authState;
+
+  const onLogout = () => {
+    // <Navigate to='/UserLogin' />;
+    logout(authDispatch);
+  };
 
   return (
     <div className='navbar'>
@@ -37,9 +43,12 @@ const Navbar = () => {
           </a>
         </li>
         <li className='navbar--item'>
-          <a href='/UserLogin' className='navbar__link--item'>
-            {user ? 'Hello ' + user.name : 'Logout'}
-          </a>
+          {/* if(user)
+          { */}
+          <button onClick={onLogout} className='navbar__link--item'>
+            LogOut
+          </button>
+          {/* } */}
         </li>
       </ul>
     </div>

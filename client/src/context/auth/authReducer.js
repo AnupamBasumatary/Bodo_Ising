@@ -64,16 +64,17 @@ const authReducer = (state, action) => {
         ...state,
         user: action.payload,
       };
-    case GOTO_ADMIN:
-      return {
-        ...state,
-        isAdminPage: true,
-      };
-    case REM_ADMIN:
-      return {
-        ...state,
-        isAdminPage: false,
-      };
+    ////was working without it----
+    // case GOTO_ADMIN:
+    //   return {
+    //     ...state,
+    //     isAdminPage: true,
+    //   };
+    // case REM_ADMIN:
+    //   return {
+    //     ...state,
+    //     isAdminPage: false,
+    //   };
     default:
       throw new Error(
         `Unsupported type of: ${action.type} , ${action.payload}`

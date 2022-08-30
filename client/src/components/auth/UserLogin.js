@@ -1,20 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import AlertContext from '../../context/alert/alertContext';
-import {
-  useAuth,
-  login,
-  clearErrors,
-  gotoAdmin,
-} from '../../context/auth/AuthState';
+import { useAuth, login, clearErrors } from '../../context/auth/AuthState';
 import LoadUser from '../Pages/users/LoadUser';
-import { Navigate } from 'react-router-dom';
-// import AdminIn from './AdminIn';
-import About from '../../About';
+import { useNavigate } from 'react-router-dom';
 
 const UserLogin = (props) => {
   const alertContext = useContext(AlertContext);
   const [authState, authDispatch] = useAuth();
-  const { error, isAuthenticated, isAdminPage } = authState;
+  const { error, isAuthenticated } = authState;
 
   const { setAlert } = alertContext;
 
@@ -41,8 +34,7 @@ const UserLogin = (props) => {
     if (email === '' || password === '') {
       setAlert('Please enter all Fields', 'danger');
     } else if (email === 'Admin@admin.com' && password === 'admin@123') {
-      console.log('jadw ra');
-      gotoAdmin(authDispatch);
+      return navigate('/AdminIn', { replace: true });
     } else {
       login(authDispatch, {
         email,
@@ -51,8 +43,10 @@ const UserLogin = (props) => {
     }
   };
 
+  let navigate = useNavigate();
+
   if (isAuthenticated) return <LoadUser />;
-  if (isAdminPage) return <About />;
+  // if (isAdminPage) return navigate('/AdminIn', { replace: true });
 
   return (
     <div>
@@ -78,21 +72,3 @@ const UserLogin = (props) => {
 };
 
 export default UserLogin;
-
-// axios
-//   .post('/api/auth', formData)
-//   .then((res) => {
-//     dispatch({
-//       type: LOGIN_SUCCESS,
-//       payload: res.data,
-//     });
-//   })
-//   .then((res) => loadUser(res))
-//   .catch(
-//     (error) => {
-//       dispatch({
-//         type: LOGIN_FAIL,
-//         payload: error.response.data.msg,
-//       });
-//     } // loadUser(dispatch);
-//   );

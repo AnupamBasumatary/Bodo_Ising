@@ -16,8 +16,6 @@ import {
   ADD_USER_DETAILS_ERROR,
   UPDATE_USER_DETAILS,
   UPDATE_USER_DETAILS_ERROR,
-  GOTO_ADMIN,
-  REM_ADMIN,
 } from '../types';
 
 //custom hook
@@ -85,6 +83,7 @@ export const register = async (dispatch, formData) => {
     },
   };
 
+  console.log(formData);
   try {
     const res = await axios.post('/api/users', formData, config);
     console.log(res.data);
@@ -146,17 +145,6 @@ export const updateUserDet = async (dispatch, formData) => {
   }
 };
 
-//ADMIN PAGES
-//Set admin page
-export const gotoAdmin = (dispatch) => {
-  dispatch({ type: GOTO_ADMIN });
-};
-
-//Remove admin page
-export const remAdmin = (dispatch) => {
-  dispatch({ type: REM_ADMIN });
-};
-
 //AUTH STATE
 const AuthState = ({ children }) => {
   const initialState = {
@@ -166,7 +154,6 @@ const AuthState = ({ children }) => {
     error: null,
     user: null,
     current: null,
-    isAdminPage: false,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
