@@ -4,7 +4,7 @@ import AdminFood from './AdminFood';
 import AdminForm from './AdminForm';
 import FoodFilter from '../../food/FoodFilter';
 
-const Admin = () => {
+const AdminFoodUpdate = () => {
   return (
     <FoodState>
       <AdminForm />
@@ -14,4 +14,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default AdminFoodUpdate;

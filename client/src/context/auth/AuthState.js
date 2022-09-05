@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useContext } from 'react';
+import React, { useEffect, useReducer, useContext, useState } from 'react';
 import axios from 'axios';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
@@ -83,10 +83,10 @@ export const register = async (dispatch, formData) => {
     },
   };
 
-  console.log(formData);
+  console.log('Register' + formData);
   try {
     const res = await axios.post('/api/users', formData, config);
-    console.log(res.data);
+    console.log('Register response' + res.data);
     dispatch({
       type: REGISTER_SUCCESS,
       payload: res.data,
@@ -113,7 +113,7 @@ export const addUserDet = async (dispatch, formData) => {
       payload: res.data,
     });
   } catch (err) {
-    console.log('error');
+    console.log('Auth State error');
     dispatch({
       type: ADD_USER_DETAILS_ERROR,
       payload: err.response.data.msg,
@@ -123,7 +123,6 @@ export const addUserDet = async (dispatch, formData) => {
 
 // Update User Details
 export const updateUserDet = async (dispatch, formData) => {
-  console.log('Update haha');
   const config = {
     headers: {
       'content-type': 'application/json',
@@ -131,7 +130,6 @@ export const updateUserDet = async (dispatch, formData) => {
   };
   try {
     const res = await axios.put('/api/userdet', formData, config);
-    console.log('updated user details' + res.data);
     dispatch({
       type: UPDATE_USER_DETAILS,
       payload: res.data,
@@ -157,19 +155,31 @@ const AuthState = ({ children }) => {
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
-  const { token, loading } = state;
+  // const { token, loading } = state;
 
-  setAuthToken(token);
+  const [isAuth, setisAuth] = useState('');
+  const [userData, setuserData] = useState('');
 
-  useEffect(() => {
-    setAuthToken(token);
-    if (loading) {
-      loadUser(dispatch);
-    }
-  }, [token, loading]);
+  // setAuthToken(token);
+
+  // useEffect(() => {
+  //   setAuthToken(token);
+  //   if (loading) {
+  //     loadUser(dispatch);
+  //   }
+  // }, [token, loading]);
 
   return (
-    <AuthContext.Provider value={{ state: state, dispatch }}>
+    <AuthContext.Provider
+      value={{
+        state: state,
+        dispatch,
+        isAuth,
+        setisAuth,
+        userData,
+        setuserData,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

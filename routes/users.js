@@ -10,20 +10,8 @@ const User = require('../models/Users');
 //Register User -- POST(/api/users) -- public
 router.post(
   '/',
-  [
-    check('name', 'Please add your name').not().isEmpty(),
-    check('email', 'Please enter a valid email').isEmail(),
-    check(
-      'password',
-      'Please enter a password with more than 6 characters'
-    ).isLength({ min: 6 }),
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
 
+  async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
@@ -58,7 +46,7 @@ router.post(
         },
         (err, token) => {
           if (err) throw err;
-          res.json({ token });
+          res.status(201).json({ status: 201, token });
         }
       );
     } catch (err) {

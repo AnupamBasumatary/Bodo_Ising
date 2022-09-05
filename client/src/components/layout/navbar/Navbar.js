@@ -1,16 +1,49 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './style/navbar-style.css';
 import mainLogo from './style/Logo-1.jpg';
-import { useAuth, logout } from '../../../context/auth/AuthState';
-import { Navigate } from 'react-router-dom';
+import { UserDataContext } from '../../ContextProvider/UserContext';
+import { LoginContext } from '../../ContextProvider/Context';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
-  const [authState, authDispatch] = useAuth();
-  const { user } = authState;
+  const { setuserData } = useContext(UserDataContext);
+  const { loginData, setLoginData } = useContext(LoginContext);
+
+  const navigate = useNavigate();
+
+  const usertoken = localStorage.getItem('usertoken');
+  const admintoken = localStorage.getItem('admintoken');
 
   const onLogout = () => {
-    // <Navigate to='/UserLogin' />;
-    logout(authDispatch);
+    navigate('/');
+    setuserData(false);
+    localStorage.removeItem('usertoken');
+  };
+
+  const onAdminLogout = async (e) => {
+    let token = localStorage.getItem('admintoken');
+
+    const res = await fetch('/api/admin1/logout', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+        Accept: 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    if (data.status === 201) {
+      console.log('LogOut User');
+      localStorage.removeItem('admintoken');
+      setLoginData(false);
+      navigate('/AdminIn');
+    } else {
+      console.log('Error');
+    }
   };
 
   return (
@@ -38,17 +71,33 @@ const Navbar = () => {
           </a>
         </li>
         <li className='navbar--item'>
-          <a href='/Login' className='navbar__link--item'>
-            Log In
-          </a>
+          {usertoken ? (
+            <button onClick={onLogout} className='navbar__link--item'>
+              LogOut
+            </button>
+          ) : (
+            <a href='/Login' className='navbar__link--item'>
+              Log In
+            </a>
+          )}
+        </li>
+        <li>
+          {usertoken ? (
+            <a href='/UserDashBoard' className='navbar__link--item'>
+              User
+            </a>
+          ) : (
+            ''
+          )}
         </li>
         <li className='navbar--item'>
-          {/* if(user)
-          { */}
-          <button onClick={onLogout} className='navbar__link--item'>
-            LogOut
-          </button>
-          {/* } */}
+          {admintoken ? (
+            <button onClick={onAdminLogout} className='navbar__link--item'>
+              LogOut
+            </button>
+          ) : (
+            ''
+          )}
         </li>
       </ul>
     </div>

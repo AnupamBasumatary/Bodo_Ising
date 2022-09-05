@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { useAuth, loadUser, setCurrent } from '../../../context/auth/AuthState';
-import NavigateUser from './NavigateUser';
+import { useAuth, loadUser } from '../../../context/auth/AuthState';
 import UserDetails from './UserDetails';
 
 const LoadUser = () => {
@@ -11,7 +10,6 @@ const LoadUser = () => {
     loadUser(authDispatch);
   }, [authDispatch]);
 
-  // if (user) return <NavigateUser />;
   if (user) return <UserDetails />;
 };
 

@@ -1,21 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import AlertContext from '../../context/alert/alertContext';
-import { useAuth, register, clearErrors } from '../../context/auth/AuthState';
+
 import LoadUser from '../Pages/users/LoadUser';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const UserRegister = (props) => {
   const alertContext = useContext(AlertContext);
-  const [authState, authDispatch] = useAuth();
-  const { error, isAuthenticated } = authState;
 
   const { setAlert } = alertContext;
-
-  useEffect(() => {
-    if (error === 'User already exists') {
-      setAlert(error, 'danger');
-      clearErrors(authDispatch);
-    }
-  }, [error, isAuthenticated, props.history, setAlert, authDispatch]);
 
   const [user, setUser] = useState({
     name: '',
@@ -30,22 +22,45 @@ const UserRegister = (props) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (name === '' || email === '' || password === '') {
       setAlert('Please enter all Fields', 'danger');
     } else if (password !== password2) {
       setAlert('Passwords do not match', 'danger');
     } else {
-      register(authDispatch, {
-        name,
-        email,
-        password,
+      const data = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
       });
+
+      const res = await data.json();
+
+      if (res.status == 201) {
+        localStorage.setItem('usertoken', res.token);
+        alert('USer Registered Successfully');
+        navigate('/UserDashBoard');
+        setUser({
+          ...user,
+          name: '',
+          email: '',
+          password: '',
+          password2: '',
+        });
+      }
     }
   };
 
-  if (isAuthenticated) return <LoadUser />;
+  // if (isAuthenticated) return <LoadUser />;
 
   return (
     <div>
@@ -81,6 +96,9 @@ const UserRegister = (props) => {
         </div>
         <input type='submit' value='Register' />
       </form>
+      <p>
+        Already an User ?<NavLink to='/Login'>Sign In</NavLink>
+      </p>
     </div>
   );
 };

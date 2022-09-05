@@ -23,7 +23,7 @@ const authenticateAdmin = async (req, res, next) => {
   } catch (error) {
     res.status(401).json({
       status: 401,
-      message: 'Unatuthorized No token provided',
+      message: 'Unauthorized No token provided',
     });
   }
 };

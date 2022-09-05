@@ -1,22 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import AlertContext from '../../context/alert/alertContext';
-import { useAuth, login, clearErrors } from '../../context/auth/AuthState';
-import LoadUser from '../Pages/users/LoadUser';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const UserLogin = (props) => {
   const alertContext = useContext(AlertContext);
-  const [authState, authDispatch] = useAuth();
-  const { error, isAuthenticated } = authState;
 
   const { setAlert } = alertContext;
-
-  useEffect(() => {
-    if (error === 'Invalid Credentials') {
-      setAlert(error, 'danger');
-      clearErrors(authDispatch);
-    }
-  }, [error, isAuthenticated, props.history, setAlert, authDispatch]);
 
   const [user, setUser] = useState({
     email: '',
@@ -25,28 +14,54 @@ const UserLogin = (props) => {
 
   const { email, password } = user;
 
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   let token = localStorage.getItem('usertoken');
+  //   if (token) {
+  //     navigate('/UserDashBoard');
+  //   } else {
+  //     navigate('/UserLogin');
+  //   }
+  // }, []);
+
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+
+    const { email, password } = user;
+
     if (email === '' || password === '') {
       setAlert('Please enter all Fields', 'danger');
     } else if (email === 'Admin@admin.com' && password === 'admin@123') {
       return navigate('/AdminIn', { replace: true });
     } else {
-      login(authDispatch, {
-        email,
-        password,
+      const data = await fetch('/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
+
+      const res = await data.json();
+
+      if (res.status == 201) {
+        localStorage.setItem('usertoken', res.token);
+        navigate('/UserDashBoard');
+        setUser({
+          email: '',
+          password: '',
+        });
+      }
     }
   };
-
-  let navigate = useNavigate();
-
-  if (isAuthenticated) return <LoadUser />;
-  // if (isAdminPage) return navigate('/AdminIn', { replace: true });
 
   return (
     <div>
@@ -67,6 +82,9 @@ const UserLogin = (props) => {
         </div>
         <input type='submit' value='Login' />
       </form>
+      <p>
+        No User account ?<NavLink to='/Register'>Register</NavLink>
+      </p>
     </div>
   );
 };

@@ -23,7 +23,6 @@ app.use('/api/savefood', require('./routes/selectFood'));
 app.use('/api/food', require('./routes/food'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/admin', require('./routes/admin'));
-app.use('/api/adminAuth', require('./routes/adminAuth'));
 app.use('/api/admin1', require('./routes/adminRouter'));
 
 app.listen(PORT, console.log(`server started on port : ${PORT}`));

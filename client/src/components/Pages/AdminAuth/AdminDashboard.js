@@ -7,31 +7,31 @@ const AdminDashboard = () => {
 
   const history = useNavigate();
 
-  const logOutUser = async () => {
-    let token = localStorage.getItem('admintoken');
+  // const logOutUser = async () => {
+  //   let token = localStorage.getItem('admintoken');
 
-    const res = await fetch('/api/admin1/logout', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-        Accept: 'application/json',
-      },
-      credentials: 'include',
-    });
+  //   const res = await fetch('/api/admin1/logout', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: token,
+  //       Accept: 'application/json',
+  //     },
+  //     credentials: 'include',
+  //   });
 
-    const data = await res.json();
-    console.log(data);
+  //   const data = await res.json();
+  //   console.log(data);
 
-    if (data.status == 201) {
-      console.log('LogOut User');
-      localStorage.removeItem('admintoken');
-      setLoginData(false);
-      history('/AdminIn');
-    } else {
-      console.log('Error');
-    }
-  };
+  //   if (data.status === 201) {
+  //     console.log('LogOut User');
+  //     localStorage.removeItem('admintoken');
+  //     setLoginData(false);
+  //     history('/AdminIn');
+  //   } else {
+  //     console.log('Error');
+  //   }
+  // };
 
   //Getting Admin Details
   const AdminDashboardValid = async () => {
@@ -47,7 +47,7 @@ const AdminDashboard = () => {
 
     const data = await res.json();
 
-    if (data.status == 401 || !data) {
+    if (data.status === 401 || !data) {
       history('*');
     } else {
       setLoginData(data);
@@ -57,20 +57,21 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     AdminDashboardValid();
+    //eslint-disable-next-line
   }, []);
 
   return (
     <>
       <div>AdminDashboard</div>
-      admin Email : {loginData ? loginData.validAdminOne.adminName : 'No name'}
-      @.com
+      HI Admin {loginData ? loginData.validAdminOne.adminName : 'No name'}
+      <div></div>
       <div>
         <button
           onClick={() => {
-            logOutUser();
+            history('/FoodUpdate');
           }}
         >
-          Logout
+          Update Menu
         </button>
       </div>
     </>

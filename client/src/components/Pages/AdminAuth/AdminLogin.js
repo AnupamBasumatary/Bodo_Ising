@@ -50,9 +50,8 @@ const AdminLogin = () => {
       });
 
       const res = await data.json();
-      // console.log(res);
 
-      if (res.status === 201) {
+      if (res.status == 201) {
         localStorage.setItem('admintoken', res.result.token);
         history('/AdminDashboard');
         setInpval({
